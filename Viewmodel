@@ -1,0 +1,14 @@
+class MoodViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: MoodRepository
+    val allMoods: LiveData<List<MoodEntry>>
+
+    init {
+        val dao = MoodDatabase.getDatabase(application).moodDao()
+        repository = MoodRepository(dao)
+        allMoods = repository.allMoods
+    }
+
+    fun insert(mood: MoodEntry) = viewModelScope.launch {
+        repository.insert(mood)
+    }
+}
