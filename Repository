@@ -1,0 +1,7 @@
+class MoodRepository(private val dao: MoodDao) {
+    val allMoods: LiveData<List<MoodEntry>> = dao.getAllMoods()
+
+    suspend fun insert(mood: MoodEntry) {
+        dao.insertMood(mood)
+    }
+}
