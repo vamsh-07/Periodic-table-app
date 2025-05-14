@@ -1,0 +1,18 @@
+@Database(entities = [MoodEntry::class], version = 1)
+abstract class MoodDatabase : RoomDatabase() {
+    abstract fun moodDao(): MoodDao
+
+    companion object {
+        @Volatile private var instance: MoodDatabase? = null
+
+        fun getDatabase(context: Context): MoodDatabase {
+            return instance ?: synchronized(this) {
+                Room.databaseBuilder(
+                    context.applicationContext,
+                    MoodDatabase::class.java,
+                    "mood_db"
+                ).build().also { instance = it }
+            }
+        }
+    }
+}
