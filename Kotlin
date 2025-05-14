@@ -1,0 +1,28 @@
+class LogMoodActivity : AppCompatActivity() {
+    private lateinit var viewModel: MoodViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_log_mood)
+
+        val spinner = findViewById<Spinner>(R.id.spinnerMood)
+        val noteInput = findViewById<EditText>(R.id.editTextNote)
+        val saveButton = findViewById<Button>(R.id.btnSaveMood)
+
+        val moodOptions = listOf("Happy", "Sad", "Neutral", "Angry", "Anxious")
+        spinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, moodOptions)
+
+        viewModel = ViewModelProvider(this).get(MoodViewModel::class.java)
+
+        saveButton.setOnClickListener {
+            val selectedMood = spinner.selectedItem.toString()
+            val note = noteInput.text.toString()
+            val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val entry = MoodEntry(mood = selectedMood, note = note, date = date)
+
+            viewModel.insert(entry)
+            Toast.makeText(this, "Mood saved!", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+    }
+}
