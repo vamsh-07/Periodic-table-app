@@ -1,0 +1,8 @@
+@Dao
+interface MoodDao {
+    @Insert
+    suspend fun insertMood(mood: MoodEntry)
+
+    @Query("SELECT * FROM mood_table ORDER BY date DESC")
+    fun getAllMoods(): LiveData<List<MoodEntry>>
+}
